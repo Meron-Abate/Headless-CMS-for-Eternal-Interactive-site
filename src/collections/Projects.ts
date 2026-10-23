@@ -24,6 +24,14 @@ export const Projects: CollectionConfig = {
     defaultColumns: ['title', 'category', 'year', '_status', 'featured', 'order'],
     listSearchableFields: ['title', 'client', 'slug'],
     description: 'Publish a project to add it to the Work page. Drafts stay private.',
+    // Shows the case-study page next to the form and updates as you type (see js/cms-preview.js on the site).
+    livePreview: {
+      url: ({ data }) => {
+        const site = (process.env.NEXT_PUBLIC_SITE_PREVIEW_URL || 'http://localhost:5500').replace(/\/$/, '')
+        const cms = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000'
+        return `${site}/preview/project/?cms=${encodeURIComponent(cms)}&id=${encodeURIComponent(String(data?.id ?? ''))}`
+      },
+    },
   },
   versions: {
     drafts: { autosave: false },
